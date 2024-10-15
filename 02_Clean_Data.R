@@ -274,10 +274,7 @@ dataset <- subset(dataset, select = -c(Taking_insulin, Taking_diabetic_pills, Di
 
 # 拆分数据集 -------
 set.seed(42)
-# train_indices <- sample(seq_len(nrow(dataset)), size = floor(0.8 * nrow(dataset)))
-# dataset_train <- dataset[train_indices,]
-# dataset_test <- dataset[-train_indices,]
-# 
+
 dataset_train <- dataset[dataset$SEQN<83732,]
 dataset_test <- dataset[dataset$SEQN>=83732 & dataset$SEQN<=93702,]
 
@@ -289,13 +286,13 @@ Abnormal_glucose_metabolism <- dataset_train$Abnormal_glucose_metabolism
 imputed_data_train <- mice::mice(subset(dataset_train, select = -c(Abnormal_glucose_metabolism)),seed = 42)
 dataset_train <- mice::complete(imputed_data_train, 1)
 dataset_train <- cbind(dataset_train,Abnormal_glucose_metabolism)
-# dataset_train <- dataset_train[complete.cases(dataset_train),]
+
 
 Abnormal_glucose_metabolism <- dataset_test$Abnormal_glucose_metabolism
 imputed_data_test <- mice::mice(subset(dataset_test, select = -c(Abnormal_glucose_metabolism)),seed = 42)
 dataset_test <- mice::complete(imputed_data_test, 1)
 dataset_test <- cbind(dataset_test,Abnormal_glucose_metabolism)
-# dataset_test <- dataset_test[complete.cases(dataset_test),]
+
 
 rm(Abnormal_glucose_metabolism)
 
@@ -304,18 +301,6 @@ set.seed(42)
 dataset_train <-
   rbind(dataset_train[dataset_train$Abnormal_glucose_metabolism == "No", ], dataset_train[sample(which(dataset_train$Abnormal_glucose_metabolism == "Yes"), sum(dataset_train$Abnormal_glucose_metabolism == "No")), ])
 
-# 过采样
-# set.seed(42)
-# dataset_train <-
-# ROSE::ovun.sample(Abnormal_glucose_metabolism ~ .,
-#                   data = dataset_train,
-#                   method = "over",
-#                   N = 2 * max(table(dataset_train$Abnormal_glucose_metabolism)))$data
-
-# library(themis)
-# set.seed(42)
-# smote_result <- smotenc(dataset_train, "Abnormal_glucose_metabolism", k = 5, over_ratio = 1)
-# dataset_train <- smote_result
 
 
 
