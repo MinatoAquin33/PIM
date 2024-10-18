@@ -122,9 +122,11 @@ dataset$Fasting_glucose <- dataset_NHANES$LBXGLU # 空腹血糖
 dataset$Glycohemoglobin <- dataset_NHANES$LBXGH # 糖化血红蛋白
 dataset$Taking_insulin <- dataset_NHANES$DIQ050  # 当前正在使用胰岛素
 levels(dataset$Taking_insulin)[3:4] <- NA
+dataset$Taking_insulin[is.na(dataset$Taking_insulin)] <- "No"
 
 dataset$Taking_diabetic_pills <- dataset_NHANES$DIQ070  # 使用降糖药
 levels(dataset$Taking_diabetic_pills)[3:4] <- NA  
+dataset$Taking_diabetic_pills[is.na(dataset$Taking_diabetic_pills)] <- "No"
 
 
 dataset$WBC <- dataset_NHANES$LBXWBCSI              # 白血球计数 WBC: White_blood_cell_count
